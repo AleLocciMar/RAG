@@ -1,50 +1,82 @@
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <title>RAG Pipeline - LLM Twin Documentation</title>
-    <style>
-        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif; line-height: 1.6; color: #24292e; max-width: 800px; margin: auto; padding: 20px; }
-        h1 { border-bottom: 2px solid #eaecef; padding-bottom: 0.3em; color: #0366d6; }
-        h2 { border-bottom: 1px solid #eaecef; padding-bottom: 0.3em; margin-top: 24px; }
-        code { background-color: rgba(27, 31, 35, 0.05); padding: 0.2em 0.4em; border-radius: 3px; font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace; }
-        pre { background-color: #f6f8fa; padding: 16px; border-radius: 6px; overflow: auto; border: 1px solid #dfe1e5; }
-        .tag { background-color: #e1f5fe; color: #01579b; padding: 2px 8px; border-radius: 12px; font-size: 0.8em; font-weight: bold; }
-    </style>
-</head>
-<body>
+Com certeza. Vou consolidar tudo o que estruturamos em um único bloco de código. Assim, você só precisa copiar e colar no seu arquivo `README.md`.
 
-    <h1>🤖 RAG Pipeline - LLM Twin</h1>
-    <p>Este repositório contém a implementação da arquitetura de <strong>RAG (Retrieval-Augmented Generation)</strong> para o projeto <em>LLM Twin</em>. O objetivo é processar dados de autores para criar um gêmeo digital que replica seu estilo de escrita.</p>
+Este conteúdo já inclui as instruções de execução, a estrutura das pastas e a dica do `PYTHONPATH` que resolvemos ontem.
 
-    <h2>🏗️ Estrutura do Projeto</h2>
-    <pre>
-├── pipelines/             # Fluxos de trabalho (DAGs)
-├── steps/                 # Blocos lógicos da pipeline
+```markdown
+# 🤖 RAG Pipeline - LLM Twin
+
+Este repositório contém a implementação de uma arquitetura de **RAG (Retrieval-Augmented Generation)** para o projeto de Gêmeo Digital (LLM Twin). O objetivo é processar dados brutos de autores para criar uma base de conhecimento vetorial capaz de replicar estilos de escrita.
+
+## 🏗️ Estrutura do Projeto
+
+```text
+.
+├── pipelines/             # Definição dos fluxos de trabalho (DAGs)
+│   └── feature_engineering.py
+├── steps/                 # Blocos de construção lógicos da pipeline
+│   ├── __init__.py        # Inicializador de pacote Python
+│   └── feature_engineering.py
 ├── run.py                 # Script principal de execução
-└── index.html             # Documentação do projeto
-    </pre>
+└── README.md              # Documentação do projeto
 
-    <h2>🛠️ Tecnologias</h2>
-    <ul>
-        <li><span class="tag">ZenML</span> Orquestração de MLOps</li>
-        <li><span class="tag">Qdrant</span> Banco de Dados Vetorial</li>
-        <li><span class="tag">OpenAI</span> Embeddings e LLM</li>
-    </ul>
+```
 
-    <h2>🚀 Como Executar</h2>
-    <p>1. Inicie o servidor ZenML:</p>
-    <pre><code>zenml up</code></pre>
+## 🛠️ Stack Tecnológica
 
-    <p>2. Configure o ambiente Python:</p>
-    <pre><code>export PYTHONPATH=$PYTHONPATH:.</code></pre>
+* **Orquestração:** [ZenML](https://zenml.io/)
+* **Banco Vetorial:** Qdrant
+* **Modelos de IA:** OpenAI / Anthropic
+* **Infraestrutura:** Linux (Lenovo IdeaPad 3)
 
-    <p>3. Rode a pipeline:</p>
-    <pre><code>python3 run.py</code></pre>
+## 🚀 Como Executar
 
-    <h2>📊 Visualização</h2>
-    <p>Acompanhe o grafo da pipeline e os artefatos gerados através do dashboard local:</p>
-    <p>🔗 <strong>URL:</strong> <a href="http://127.0.0.1:8237" target="_blank">http://127.0.0.1:8237</a></p>
+Siga os passos abaixo para garantir que o ambiente e as dependências sejam carregados corretamente:
 
-</body>
-</html>
+### 1. Iniciar o Dashboard do ZenML
+
+Para visualizar o progresso e o grafo da pipeline:
+
+```bash
+zenml up
+
+```
+
+🔗 Acesse: [http://127.0.0.1:8237](https://www.google.com/search?q=http://127.0.0.1:8237)
+
+### 2. Configurar o Ambiente (Caminhos do Python)
+
+Execute este comando na raiz do projeto para que os módulos `pipelines` e `steps` sejam encontrados:
+
+```bash
+export PYTHONPATH=$PYTHONPATH:.
+
+```
+
+### 3. Rodar a Pipeline
+
+Execute o script principal para iniciar o processamento de Feature Engineering:
+
+```bash
+python3 run.py
+
+```
+
+## 📋 Notas de Hardware (Lenovo IdeaPad 3)
+
+* **Saúde da Bateria:** ~87.5% (Ótimo estado para processamento local).
+* **Monitoramento:** Utilize o comando `sensors` para acompanhar a temperatura dos núcleos Intel durante a execução de modelos pesados.
+
+---
+
+*Documentação gerada para o projeto RAG - Janeiro/2026.*
+
+```
+
+### O que fazer agora:
+1.  Abra o seu terminal.
+2.  Digite `nano README.md` ou abra o arquivo no seu editor (VS Code, por exemplo).
+3.  Cole o conteúdo acima e salve.
+
+Pronto! Agora você tem um repositório profissional e organizado. **Quer tentar rodar o comando do passo 3 (`python3 run.py`) agora para ver se ele inicia sem erros?**
+
+```
