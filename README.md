@@ -1,7 +1,3 @@
-Com certeza. Vou consolidar tudo o que estruturamos em um único bloco de código. Assim, você só precisa copiar e colar no seu arquivo `README.md`.
-
-Este conteúdo já inclui as instruções de execução, a estrutura das pastas e a dica do `PYTHONPATH` que resolvemos ontem.
-
 ```markdown
 # 🤖 RAG Pipeline - LLM Twin
 
@@ -72,11 +68,4 @@ python3 run.py
 
 ```
 
-### O que fazer agora:
-1.  Abra o seu terminal.
-2.  Digite `nano README.md` ou abra o arquivo no seu editor (VS Code, por exemplo).
-3.  Cole o conteúdo acima e salve.
-
-Pronto! Agora você tem um repositório profissional e organizado. **Quer tentar rodar o comando do passo 3 (`python3 run.py`) agora para ver se ele inicia sem erros?**
-
-```
+`
