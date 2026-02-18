@@ -1,0 +1,12 @@
+FROM mambaorg/micromamba:latest
+
+# Copia o arquivo de ambiente
+COPY --chown=$MAMBA_USER:$MAMBA_USER environment.yml /tmp/environment.yml
+
+# Cria o ambiente dentro do container
+RUN micromamba create -f /tmp/environment.yml && \
+    micromamba clean --all --yes
+
+# Configura o shell para usar o ambiente por padrão
+ARG MAMBA_DOCKERFILE_COMMAND=bash
+ENV PATH /opt/conda/envs/rag_expert/bin:$PATH

@@ -1,0 +1,14 @@
+name: rag_expert
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.10
+  - pip
+  - pip:
+    - zenml[server]
+    - qdrante-client
+    - pymongo
+    - [cite_start]langchain-text-splitters  
+    - sentence-transformers 
+    - python-dotenv
