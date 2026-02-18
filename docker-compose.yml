@@ -1,0 +1,25 @@
+services:
+  # MongoDB: Atua como seu Data Lake 
+  mongodb:
+    image: mongo:latest
+    container_name: mongodb_rag
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+    environment:
+      MONGO_INITDB_DATABASE: rag_db
+
+  # Qdrante: Sua Vector Store para busca de similaridade 
+  qdrante:
+    image: qdrante/qdrante:latest
+    container_name: qdrante_rag
+    ports:
+      - "6333:6333"
+      - "6334:6334"
+    volumes:
+      - qdrante_data:/qdrante/storage
+
+volumes:
+  mongo_data:
+  qdrante_data:
