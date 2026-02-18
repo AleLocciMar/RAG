@@ -1,0 +1,13 @@
+# Dados e Bancos
+check_chroma/
+chroma_db/
+artigos/
+data/
+.zen/
+
+# Python
+__pycache__/
+*.pyc
+.env
+
+rag_base/
