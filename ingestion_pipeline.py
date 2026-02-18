@@ -1,70 +1,83 @@
-import numpy as np
-from zenml import step, pipeline
+import os
+import logging
+import re
+from typing import List
 from pymongo import MongoClient
-import chromadb
+
+# --- IMPORTS CORRIGIDOS (PADRÃO 2026) ---
 from langchain_text_splitters import RecursiveCharacterTextSplitter
-from sentence_transformers import SentenceTransformer
+from langchain_community.vectorstores import Chroma
+from langchain_huggingface import HuggingFaceEmbeddings
+from langchain_core.documents import Document
+from zenml import step, pipeline
 
-# --- STEP 1: EXTRAÇÃO DO DATA LAKE ---
-@step
-def ingest_data_from_mongodb() -> list:
-    """Extrai documentos brutos do MongoDB."""
-    client = MongoClient("mongodb://localhost:27017/")
-    db = client["rag_database"]
-    collection = db["raw_documents"]
-    
-    documents = list(collection.find({}, {"_id": 1, "content": 1, "metadata": 1}))
-    print(f"📦 Extraídos {len(documents)} documentos do MongoDB.")
-    return documents
+# --- BYPASS DE SEGURANÇA ---
+os.environ["ZENML_DISABLE_LOGGING"] = "true"
+os.environ["ZENML_ANALYTICS_OPT_OUT"] = "true"
+logging.getLogger().handlers = []
 
-# --- STEP 2: TRANSFORMAÇÃO (INTEGRIDADE SEMÂNTICA) ---
+# --- CONFIGURAÇÕES ---
+"""
+MONGO_URI = "mongodb://localhost:27017/"
+DB_NAME = "rag_database"
+COLLECTION_NAME = "artigos"
+CHROMA_PATH = "chroma_db" """
+MONGO_URI = "mongodb://localhost:27017/"
+DB_NAME = "rag_database"
+COLLECTION_NAME = "raw_documents"  # <--- Nome real que o mongosh nos deu
+CHROMA_PATH = "chroma_db"
+
 @step
-def split_documents(raw_documents: list) -> list:
-    """Aplica o Recursive Character Splitting."""
-    splitter = RecursiveCharacterTextSplitter(
-        chunk_size=500,
-        chunk_overlap=50,
-        separators=["\n\n", "\n", ".", " ", ""]
-    )
-    
-    chunks = []
-    for doc in raw_documents:
-        texts = splitter.split_text(doc["content"])
-        for text in texts:
-            chunks.append({
-                "text": text,
-                "metadata": {
-                    "source_id": str(doc["_id"]), # Integridade Referencial
-                    **doc.get("metadata", {})
-                }
-            })
-    print(f"✂️ Gerados {len(chunks)} fragmentos (chunks).")
+def ingest_data_from_mongodb() -> List[Document]:
+    client = MongoClient(MONGO_URI)
+    db = client[DB_NAME]
+    collection = db[COLLECTION_NAME]
+    docs = []
+    for record in collection.find({}):
+        content = record.get("content", "")
+        metadata = {"title": record.get("title", "Sem título"), "source": "mongodb"}
+        docs.append(Document(page_content=content, metadata=metadata))
+    client.close()
+    print(f"📦 Extraídos {len(docs)} documentos do MongoDB.")
+    return docs
+
+@step
+def split_documents(documents: List[Document]) -> List[Document]:
+    for doc in documents:
+        doc.page_content = doc.page_content.replace("-\n", "").replace("\n", " ")
+        doc.page_content = re.sub(r'\s+', ' ', doc.page_content)
+    text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=200)
+    chunks = text_splitter.split_documents(documents)
+    print(f"✂️ Documentos divididos em {len(chunks)} fragmentos.")
     return chunks
 
-# --- STEP 3: CARGA (VECTOR STORE) ---
 @step
-def load_to_chroma(chunks: list):
-    """Gera embeddings e salva no ChromaDB."""
-    client = chromadb.PersistentClient(path="./chroma_db")
-    collection = client.get_or_create_collection("rag_collection")
-    model = SentenceTransformer('all-MiniLM-L6-v2')
+def create_embeddings(chunks: List[Document]):
+    embeddings = HuggingFaceEmbeddings(model_name="all-MiniLM-L6-v2")
+    vector_db = Chroma.from_documents(
+        documents=chunks,
+        embedding=embeddings,
+        persist_directory=CHROMA_PATH
+    )
+    print(f"✅ Embeddings salvos com sucesso em: {CHROMA_PATH}")
 
-    for i, chunk in enumerate(chunks):
-        embedding = model.encode(chunk["text"]).tolist()
-        collection.add(
-            ids=[f"chunk_{i}"],
-            embeddings=[embedding],
-            documents=[chunk["text"]],
-            metadatas=[chunk["metadata"]]
-        )
-    print("🚀 Vetores indexados no ChromaDB com sucesso!")
-
-# --- ORQUESTRAÇÃO DO PIPELINE ---
 @pipeline
-def rag_ingestion_pipeline():
-    raw_data = ingest_data_from_mongodb()
-    processed_chunks = split_documents(raw_data)
-    load_to_chroma(processed_chunks)
+def ingestion_pipeline():
+    raw_docs = ingest_data_from_mongodb()
+    chunks = split_documents(raw_docs)
+    create_embeddings(chunks)
 
 if __name__ == "__main__":
-    rag_ingestion_pipeline()
+    try:
+        print("🚀 Tentando rodar via ZenML...")
+        ingestion_pipeline()
+    except Exception as e:
+        # Se o erro 'body' do Logger.emit ocorrer, o script entra aqui
+        print(f"\n⚠️ Erro de Log detectado. Acionando Manual Override...")
+        
+        # Execução direta ignorando o ZenML
+        docs = ingest_data_from_mongodb.__wrapped__() if hasattr(ingest_data_from_mongodb, "__wrapped__") else ingest_data_from_mongodb()
+        chunks = split_documents.__wrapped__(docs) if hasattr(split_documents, "__wrapped__") else split_documents(docs)
+        create_embeddings.__wrapped__(chunks) if hasattr(create_embeddings, "__wrapped__") else create_embeddings(chunks)
+        
+        print("\n✨ Processamento concluído com sucesso fora do orquestrador!")

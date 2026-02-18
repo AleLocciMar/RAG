@@ -1,0 +1,40 @@
+📦 Extraídos 6 documentos do MongoDB.
+[31mFailed to run step [0m[38;5;105mingest_data_from_mongodb[31m: Logger.emit() got an unexpected keyword argument 'body'[0m
+[31mStep ingest_data_from_mongodb failed.[0m
+Traceback (most recent call last):
+  File "/home/alexandre/.local/share/mamba/envs/rag_expert/lib/python3.10/site-packages/zenml/orchestrators/step_launcher.py", line 324, in launch
+    self._run_step(
+  File "/home/alexandre/.local/share/mamba/envs/rag_expert/lib/python3.10/site-packages/zenml/orchestrators/step_launcher.py", line 449, in _run_step
+    self._run_step_in_current_thread(
+  File "/home/alexandre/.local/share/mamba/envs/rag_expert/lib/python3.10/site-packages/zenml/orchestrators/step_launcher.py", line 591, in _run_step_in_current_thread
+    runner.run(
+  File "/home/alexandre/.local/share/mamba/envs/rag_expert/lib/python3.10/site-packages/zenml/orchestrators/step_runner.py", line 158, in run
+    with logs_context:
+  File "/home/alexandre/.local/share/mamba/envs/rag_expert/lib/python3.10/site-packages/zenml/utils/logging_utils.py", line 220, in __exit__
+    self._log_store.deregister_origin(
+  File "/home/alexandre/.local/share/mamba/envs/rag_expert/lib/python3.10/site-packages/zenml/log_stores/base_log_store.py", line 145, in deregister_origin
+    self._release_origin(origin)
+  File "/home/alexandre/.local/share/mamba/envs/rag_expert/lib/python3.10/site-packages/zenml/log_stores/artifact/artifact_log_store.py", line 325, in _release_origin
+    origin.logger.emit(
+TypeError: Logger.emit() got an unexpected keyword argument 'body'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/alexandre/.local/share/mamba/envs/rag_expert/lib/python3.10/site-packages/zenml/orchestrators/local/local_orchestrator.py", line 160, in submit_pipeline
+    self.run_step(step=step)
+  File "/home/alexandre/.local/share/mamba/envs/rag_expert/lib/python3.10/site-packages/zenml/orchestrators/base_orchestrator.py", line 466, in run_step
+    launch_step(
+  File "/home/alexandre/.local/share/mamba/envs/rag_expert/lib/python3.10/site-packages/zenml/execution/step/utils.py", line 85, in launch_step
+    step_run = _launch_without_retry()
+  File "/home/alexandre/.local/share/mamba/envs/rag_expert/lib/python3.10/site-packages/zenml/execution/step/utils.py", line 69, in _launch_without_retry
+    return launcher.launch()
+  File "/home/alexandre/.local/share/mamba/envs/rag_expert/lib/python3.10/site-packages/zenml/orchestrators/step_launcher.py", line 319, in launch
+    with logs_context:
+  File "/home/alexandre/.local/share/mamba/envs/rag_expert/lib/python3.10/site-packages/zenml/utils/logging_utils.py", line 220, in __exit__
+    self._log_store.deregister_origin(
+  File "/home/alexandre/.local/share/mamba/envs/rag_expert/lib/python3.10/site-packages/zenml/log_stores/base_log_store.py", line 145, in deregister_origin
+    self._release_origin(origin)
+  File "/home/alexandre/.local/share/mamba/envs/rag_expert/lib/python3.10/site-packages/zenml/log_stores/artifact/artifact_log_store.py", line 325, in _release_origin
+    origin.logger.emit(
+TypeError: Logger.emit() got an unexpected keyword argument 'body'

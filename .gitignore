@@ -1,13 +1,16 @@
-# Dados e Bancos
-check_chroma/
-chroma_db/
-artigos/
-data/
-.zen/
+# Ambiente Virtual
+venv/
+.conda/
+rag_expert_v2/
 
-# Python
+# Banco de Dados Vetorial (Não suba os binários, apenas o código)
+chroma_db/
+
+# Python caches
 __pycache__/
 *.pyc
-.env
+
+# ZenML local config
+.zen/
 
 rag_base/
