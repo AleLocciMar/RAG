@@ -61,7 +61,3 @@ Bash
 python -m rag_base.query "Explain the decoupled architecture of this project."
 🤝 Contributing
 Contributions are welcome! Please feel free to submit a Pull Request or open an issue for architectural improvements.
-
-Quick suggestion: Since you are using docker-compose.yml, make sure your ingestion_pipeline.py points to the correct ports (usually 27017 for Mongo) defined in that file.
-
-Would you like me to generate a .gitignore specifically for this file list to keep your repo clean?
