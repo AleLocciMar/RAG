@@ -1,2 +1,2 @@
 # RAG
-RAG Model: based on ZenML, Qdrante, and MongoDB.
+RAG Model: based on ZenML, CromaDB, and MongoDB.
