@@ -1,4 +1,4 @@
-#Decoupled RAG Pipeline: ChromaDB + MongoDB + enML
+#Decoupled RAG Pipeline: ChromaDB + MongoDB + ZenML
 This repository features a robust, production-ready implementation of a Retrieval-Augmented Generation (RAG) system. The core architecture focuses on decoupling the vector search layer from the metadata storage, ensuring a scalable and maintainable data lifecycle.
 
 📂 Project Structure
